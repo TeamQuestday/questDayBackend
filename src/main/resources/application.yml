@@ -24,10 +24,6 @@ spring:
 
 logging:
   level:
-    org:
-      hibernate:
-        sql: debug
-        type:
-          descriptor:
-            sql:
-              BasicBinder: trace
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
