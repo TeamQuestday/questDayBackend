@@ -24,20 +24,35 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // logback
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Logging
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
+    // Devtools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // MySQL
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // H2 Database for testing
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
