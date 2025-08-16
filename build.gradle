@@ -21,6 +21,7 @@ jacoco {
 test {
     useJUnitPlatform() // JUnit5 사용하는 경우
     finalizedBy jacocoTestReport // 테스트 후 리포트 생성
+    systemProperty "spring.profiles.active", "test" // CI 환경에서 테스트용 프로파일 적용
 }
 
 configurations {
