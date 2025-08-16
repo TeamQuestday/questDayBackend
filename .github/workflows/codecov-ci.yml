@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 코드 체크아웃
       - uses: actions/checkout@v4
 
       # gradlew 실행 권한 부여
@@ -24,11 +23,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # Gradle 빌드 및 테스트 실행
+      # Gradle 빌드 및 테스트 실행 (테스트 프로파일 적용)
       - name: Build and run tests with Gradle
         run: ./gradlew clean build jacocoTestReport
+        env:
+          SPRING_PROFILES_ACTIVE: test
 
-      # Codecov로 커버리지 업로드
+      # Codecov 업로드
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
