@@ -41,3 +41,5 @@ out/
 
 # Docker MySQL data
 /db
+# 로깅 데이터
+/logs
