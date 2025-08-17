@@ -22,7 +22,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
         // 유저 ID 설정 (예: SecurityContext에서 추출)
         String userId = extractUserIdFromRequest(request); // 구현 필요
-        MDC.put(USER_ID, userId != null ? userId : "anonymous");
+        MDC.put(USER_ID, userId);
 
         return true;
     }

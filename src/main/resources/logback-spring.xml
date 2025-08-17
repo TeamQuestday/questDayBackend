@@ -4,7 +4,7 @@
     <!-- 공통 설정 -->
     <property name="LOG_PATH" value="logs" />
     <property name="LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%replace(%X{userId}){'^.+$',' [userId:%X{userId}]'}%replace(%X{requestId}){'^.+$',' [requestId:%X{requestId}]'}%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [userId:%X{userId:-anonymous}] [requestId:%X{requestId}]%n"/>
 
     <!-- 콘솔 로그 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -18,7 +18,7 @@
         <file>${LOG_PATH}/app-info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/app-info.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -35,7 +35,7 @@
         <file>${LOG_PATH}/app-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/app-error.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
