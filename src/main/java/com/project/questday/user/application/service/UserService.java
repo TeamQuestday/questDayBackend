@@ -1,5 +1,7 @@
 package com.project.questday.user.application.service;
 
+import com.project.questday.global.exception.CustomApplicationException;
+import com.project.questday.global.exception.ErrorCode;
 import com.project.questday.user.application.dto.serviceDto.UserSaveInfo;
 import com.project.questday.user.application.dto.serviceDto.UserUpdatePasswordInfo;
 import com.project.questday.user.application.dto.serviceDto.UserUpdateProfileInfo;
@@ -44,7 +46,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User userFindByEmail(String email) {
         return userRepository.findByUserEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.EMAIL_NOT_FOUND));
     }
 
 

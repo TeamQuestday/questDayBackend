@@ -3,7 +3,6 @@ package com.project.questday.user.application.dto.controllerDto;
 import com.project.questday.user.application.dto.serviceDto.UserUpdatePasswordInfo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

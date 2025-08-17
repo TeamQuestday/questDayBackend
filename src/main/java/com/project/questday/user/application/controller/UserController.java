@@ -6,6 +6,8 @@ import com.project.questday.user.application.dto.controllerDto.UserUpdatePasswor
 import com.project.questday.user.application.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,23 +26,29 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void userSave(@Valid @RequestBody UserSaveRequest userSaveRequest) {
+    public ResponseEntity<Void> userSave(@Valid @RequestBody UserSaveRequest userSaveRequest) {
         userService.userSave(userSaveRequest.userSaveDto());
+        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 Created
     }
 
     @PatchMapping("/{email}/profile")
-    public void updateProfile(@Valid @RequestBody UseUpdateProfileRequest useUpdateProfileRequest, @PathVariable String email) {
-        userService.updateProfile(email,useUpdateProfileRequest.userUpdateProfileDto());
+    public ResponseEntity<Void> updateProfile(@Valid @RequestBody UseUpdateProfileRequest request,
+                                              @PathVariable String email) {
+        userService.updateProfile(email, request.userUpdateProfileDto());
+        return ResponseEntity.ok().build(); // 200 OK
     }
 
     @PutMapping("/{email}/password")
-    public void updatePassword(@Valid @RequestBody UserUpdatePasswordRequest userUpdatePasswordRequest, @PathVariable String email) {
-        userService.updatePassword(email, userUpdatePasswordRequest.userUpdatePasswordDto());
+    public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request,
+                                               @PathVariable String email) {
+        userService.updatePassword(email, request.userUpdatePasswordDto());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{email}")
-    public void userDelete(@PathVariable String email) {
+    public ResponseEntity<Void> userDelete(@PathVariable String email) {
         userService.userDelete(email);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
 
