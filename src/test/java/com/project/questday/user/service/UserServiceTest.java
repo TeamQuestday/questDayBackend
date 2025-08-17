@@ -1,6 +1,8 @@
 package com.project.questday.user.service;
 
 
+import com.project.questday.global.exception.CustomApplicationException;
+import com.project.questday.global.exception.ErrorCode;
 import com.project.questday.user.application.dto.serviceDto.UserUpdatePasswordInfo;
 import com.project.questday.user.application.dto.serviceDto.UserUpdateProfileInfo;
 import com.project.questday.user.application.service.UserService;
@@ -46,8 +48,8 @@ class UserServiceTest {
 
         assertThatThrownBy(() -> userService.updateProfile("missing@example.com",
                 new UserUpdateProfileInfo("email", "nick")))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("유저를 찾을 수 없습니다.");
+                .isInstanceOf(CustomApplicationException.class)
+                .hasMessage(ErrorCode.EMAIL_NOT_FOUND.getMessage());
     }
 
     @Test

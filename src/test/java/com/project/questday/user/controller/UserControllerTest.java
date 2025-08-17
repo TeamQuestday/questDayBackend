@@ -1,5 +1,6 @@
 package com.project.questday.user.controller;
 
+import com.project.questday.user.domain.entity.User;
 import com.project.questday.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -32,19 +34,19 @@ class UserControllerTest {
     }
 
     @Test
-    void postUser_shouldReturnOk_whenValidRequest() throws Exception {
+    void postUser_shouldReturnCreated_whenValidRequest() throws Exception {
         String json = """
             {
               "userEmail": "test@example.com",
               "userNickname": "nick",
-              "userPassword": "Pass1234!@#$"
+              "userPassword": "pass1234!@#$abcd"
             }
             """;
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated()); // 201 Created
     }
 
     @Test
@@ -59,7 +61,7 @@ class UserControllerTest {
         mockMvc.perform(patch("/api/users/test@example.com/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()); // 400 Bad Request
     }
 
     @Test
@@ -73,7 +75,22 @@ class UserControllerTest {
         mockMvc.perform(put("/api/users/test@example.com/password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()); // 400 Bad Request
     }
-}
 
+    @Test
+    void deleteUser_shouldReturnNoContent_whenValidEmail() throws Exception {
+        // given : DB에 사용자 저장
+        userRepository.save(User.builder()
+                .userEmail("delete@example.com")
+                .userNickname("deleteNick")
+                .userPassword("validpass1234!@#")
+                .build());
+
+        // when & then
+        mockMvc.perform(delete("/api/users/delete@example.com"))
+                .andExpect(status().isNoContent()); // 204 No Content
+    }
+
+
+}
