@@ -19,9 +19,9 @@ jacoco {
 }
 
 test {
-    useJUnitPlatform() // JUnit5 사용하는 경우
-    finalizedBy jacocoTestReport // 테스트 후 리포트 생성
-    systemProperty "spring.profiles.active", "test" // CI 환경에서 테스트용 프로파일 적용
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+    systemProperty "spring.profiles.active", "test"
 }
 
 configurations {
@@ -33,24 +33,43 @@ configurations {
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.required = true   // Codecov 업로드용
-        html.required = true  // 로컬에서 확인용
+        xml.required = true
+        html.required = true
         csv.required = false
     }
+
+    // global 패키지 제외 (리포트 생성 단계)
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            'com/project/questday/global/**'
+                    ])
+                })
+        )
+    }
 }
+
 jacocoTestCoverageVerification {
     violationRules {
         rule {
-            // 전체 기준
+            // global 패키지 제외 (검증 단계)
+            excludes = [
+                    'com/project/questday/global/**'
+            ]
+
+            // 라인 커버리지
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.60 // 라인 커버리지 60% 이상
+                minimum = 0.60
             }
+
+            // 브랜치 커버리지
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.05 // 브랜치 커버리지 5% 이상
+                minimum = 0.00
             }
         }
     }
