@@ -3,6 +3,7 @@ package com.project.questday.global.exception;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -111,6 +112,23 @@ public class GlobalExceptionHandler {
 
         log.warn("[NoResourceFound] {}", ex.getMessage(), ex);
         return new ResponseEntity<>(errorResult, httpStatus);
+    }
+
+    /**
+     * DB 제약조건 위반 처리 (중복 키 등)
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<CustomExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        CustomExceptionResponse errorResponse = new CustomExceptionResponse(
+                httpStatus,
+                "DUPLICATE_KEY",
+                "이미 존재하는 값이 있습니다.",
+                getTraceId()
+        );
+
+        log.warn("[Conflict Error] {}", ex.getMessage(), ex);
+        return new ResponseEntity<>(errorResponse, httpStatus);
     }
 
     /**
